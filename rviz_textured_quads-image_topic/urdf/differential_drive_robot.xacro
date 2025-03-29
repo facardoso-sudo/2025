@@ -1,0 +1,200 @@
+<?xml version='1.0'?>
+
+<robot name="first_tb3" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+<!--<model name="differential_drive_robot.xacro">-->
+
+  <xacro:include filename="$(find rviz_textured_quads)/urdf/differential_drive_robot.gazebo" />
+  <xacro:include filename="$(find rviz_textured_quads)/urdf/materials.xacro" />
+  <xacro:include filename="$(find rviz_textured_quads)/urdf/xacro_variables.xacro" />
+
+<!--Links Declaration-->
+
+  <link name='chassis'>
+    <!--<pose>0.30 0.20 0.0 0 0 0</pose>-->
+
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0.10 0.10 0.45" rpy="0 88.71 0"/>
+
+      <cylinder_inertia m="1.0" r="${chasis_cylinder_radius}" h="${chasis_cylinder_height}"/>
+
+      <inertia
+          ixx="0.1" ixy="0" ixz="0"
+          iyy="0.1" iyz="0"
+          izz="0.1"
+      />
+    </inertial>
+
+    <collision name='collision'>
+      <geometry>
+        <cylinder radius="${chasis_cylinder_radius}" length="${chasis_cylinder_height}"/>
+      </geometry>
+           <surface>
+            <contact>
+              <collide_without_contact>false</collide_without_contact>
+            </contact>
+          </surface>
+          <selfCollide>false</selfCollide>
+    </collision>
+
+    <visual name='chassis_visual'>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <cylinder radius="${chasis_cylinder_radius}" length="${chasis_cylinder_height}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+
+    <collision name='caster_collision'>
+      <origin xyz="${chasis_caster_x} ${chasis_caster_y} ${chasis_caster_z}" rpy=" ${chasis_caster_r} ${chasis_caster_p} ${chasis_caster_ya}"/>
+      <geometry>
+        <sphere radius="${chasis_caster_radius}"/>
+      </geometry>
+      <surface>
+            <contact>
+              <collide_without_contact>false</collide_without_contact>
+            </contact>
+          <friction>
+          <ode>
+            <mu>0</mu>
+            <mu2>0</mu2>
+            <slip1>1.0</slip1>
+            <slip2>1.0</slip2>
+          </ode>
+        </friction>
+      </surface>
+      <selfCollide>false</selfCollide>
+    </collision>
+
+    <visual name='caster_visual'>
+      <origin xyz="${chasis_caster_x} ${chasis_caster_y} ${chasis_caster_z}" rpy=" ${chasis_caster_r} ${chasis_caster_p} ${chasis_caster_ya}"/>
+      <geometry>
+        <sphere radius="${chasis_caster_radius}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <collision name='caster_collision2'>
+      <origin xyz="${chasis_caster2_x} ${chasis_caster2_y} ${chasis_caster2_z}" rpy=" ${chasis_caster2_r} ${chasis_caster2_p} ${chasis_caster2_ya}"/>
+      <geometry>
+        <sphere radius="${chasis_caster_radius}"/>
+      </geometry>
+      <surface>
+            <contact>
+              <collide_without_contact>false</collide_without_contact>
+            </contact>
+          <friction>
+          <ode>
+            <mu>0</mu>
+            <mu2>0</mu2>
+            <slip1>1.0</slip1>
+            <slip2>1.0</slip2>
+          </ode>
+        </friction>
+      </surface>
+      <selfCollide>false</selfCollide>
+    </collision>
+
+    <visual name='caster2_visual'>
+      <origin xyz="${chasis_caster2_x} ${chasis_caster2_y} ${chasis_caster2_z}" rpy=" ${chasis_caster2_r} ${chasis_caster2_p} ${chasis_caster2_ya}"/>
+      <geometry>
+        <sphere radius="${chasis_caster_radius}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+
+
+
+  <link name="left_wheel">
+    <!--origin xyz="0.1 0.13 0.1" rpy="0 1.5707 1.5707"/-->
+    <collision name="collision">
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <geometry>
+        <cylinder radius="${wheel_cylinder_radius}" length="${wheel_cylinder_height}"/>
+      </geometry>
+          <surface>
+            <contact>
+              <collide_without_contact>false</collide_without_contact>
+            </contact>
+          </surface>
+          <selfCollide>false</selfCollide>
+    </collision>
+    <visual name="left_wheel_visual">
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <geometry>
+        <cylinder radius="${wheel_cylinder_radius}" length="${wheel_cylinder_height}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <mass value="15.0"/>
+      <cylinder_inertia m="15.0" r="${wheel_cylinder_radius}" h="${wheel_cylinder_height}"/>
+      <inertia
+        ixx="0.1" ixy="0.0" ixz="0.0"
+        iyy="0.1" iyz="0.0"
+        izz="0.1"/>
+    </inertial>
+  </link>
+
+
+  <link name="right_wheel">
+    <collision name="collision">
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <geometry>
+        <cylinder radius="${wheel_cylinder_radius}" length="${wheel_cylinder_height}"/>
+      </geometry>
+          <surface>
+            <contact>
+              <collide_without_contact>false</collide_without_contact>
+            </contact>
+          </surface>
+          <selfCollide>false</selfCollide>
+    </collision>
+    <visual name="right_wheel_visual">
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <geometry>
+        <cylinder radius="${wheel_cylinder_radius}" length="${wheel_cylinder_height}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <origin xyz="${wheel_x} ${wheel_y} ${wheel_z}" rpy="${wheel_r} ${wheel_p} ${wheel_ya}"/>
+      <mass value="15.0"/>
+      <cylinder_inertia m="15.0" r="${wheel_cylinder_radius}" h="${wheel_cylinder_height}"/>
+      <inertia
+        ixx="0.1" ixy="0.0" ixz="0.0"
+        iyy="0.1" iyz="0.0"
+        izz="0.1"/>
+    </inertial>
+  </link>
+
+
+<!--Joint Declaration-->
+
+  <joint type="continuous" name="left_wheel_hinge">
+    <origin xyz="${left_wheel_x} ${left_wheel_y} ${left_wheel_z}" rpy="0 0 0"/>
+    <child link="left_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <!-- <limit effort="100" velocity="100"/> -->
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+  <joint type="continuous" name="right_wheel_hinge">
+    <origin xyz="${right_wheel_x} ${right_wheel_y} ${right_wheel_z}" rpy="0 0 0"/>
+    <child link="right_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <!-- <limit effort="100" velocity="100"/> -->
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+<!--</model>-->
+
+</robot>

@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="use_static_tf" default="true" />
+
+  <node pkg="rviz" type="rviz" name="rviz_textured_quads"
+      args="-d $(find rviz_textured_quads)/config/rviz_sync_lmkd.rviz"
+      output="screen"/>
+
+
+   <!-- 
+    <node pkg="tf" type="static_transform_publisher" name="camera_to_optical_tf" 
+    args="0 0 0 -1.570796 0 -1.570796 camera1 usb_cam 10" />
+  -->
+    
+    <node pkg="tf" type="static_transform_publisher" name="camera_to_optical_tf" 
+    args="0 0 0 0 0 0 camera1 usb_cam 10" />
+  
+    <!-- TODO set these actual transform values based on real robot!!! -->
+    <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link" 
+    args="0 0 0 0 0 0 base_footprint map 10" />
+    <!-- 
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_tf" 
+    args="0 0 1.0 0 0.78539816339 0 map camera1 10" />
+    -->
+
+
+
+  <!-- 
+  <node pkg="tf" type="static_transform_publisher" name="quad_broadcaster"
+      args="0.5 0.3 -0.05 -29.86 0 -160.2 map quad 30"
+      if="$(arg use_static_tf)" />
+  -->
+
+    <node pkg="tf" type="static_transform_publisher" name="quad_broadcaster"
+      args="0.3 0.4 0 0 0 0 map quad 30"
+      if="$(arg use_static_tf)" />
+
+  <group ns="camera1">
+   
+  <node pkg="tf" type="static_transform_publisher" name="camera_broadcaster"
+      args="0 0 2.5 0 0 0 map camera1 30"
+      if="$(arg use_static_tf)" />
+   <!--
+    <node pkg="tf" type="static_transform_publisher" name="camera_broadcaster"
+      args="0 0 2.5 0 0.78539816339 0 map camera1 30"
+      if="$(arg use_static_tf)" />
+ -->
+  <node name="camera_info" pkg="rostopic" type="rostopic"
+      args="pub camera_info sensor_msgs/CameraInfo
+     '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera1'},
+      height: 768, width: 1024, distortion_model: 'plumb_bob',
+      D: [0],
+      K: [500.0, 0.0, 320, 0.0, 500.0, 240.0, 0.0, 0.0, 1.0],
+      R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+      P: [500.0, 0.0, 320, 0.0, 0.0, 500, 240, 0.0, 0.0, 0.0, 1.0, 0.0],
+      binning_x: 0, binning_y: 0,
+      roi: {x_offset: 0, y_offset: 0, height: 768, width: 1024, do_rectify: false}}' -r 2"
+      output="screen"/>
+  </group>
+
+    <arg name="world" default="empty"/> 
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <!-- To include it add the following line -->
+    <!-- <xacro:include filename="example_gazebo.xacro" /> -->
+
+    <!--<arg name="world_name" value="$(find differential_drive_robot_gazebo)/world/test_world.world"/>-->
+    <arg name="world_name" value="$(find rviz_textured_quads)/world/collide_without_contact.world"/>
+    <!--<arg name="world_name" value="$(find differential_drive_robot_gazebo)/worlds/differential_drive_robot.world"/>-->
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+  
+  
+  
+
+    <arg name="model" default="$(find rviz_textured_quads)/urdf/" doc="model type [differential_drive_robot.xacro, differential_drive_robot2.xacro, ar_tag1.urdf]"/>
+    
+    <arg name="first_tb3"  default="tb3_0"/>
+    <arg name="second_tb3"  default="tb3_1"/>
+    <arg name="third_tb3"  default="tb3_2"/>
+    <arg name="fourth_tb3"  default="camera"/>
+
+
+    <!-- 3 in the same room: -->
+    <arg name="fourth_tb3_x_pos" default=" 0.00"/>
+    <arg name="fourth_tb3_y_pos" default="0.90"/>
+    <arg name="fourth_tb3_z_pos" default=" 2.7"/>
+    <arg name="fourth_tb3_yaw"   default=" 0.0"/>
+    
+    <!-- 3 in the same room: 
+    <arg name="third_tb3_x_pos" default=" 0.10"/>
+    <arg name="third_tb3_y_pos" default="0.90"/>
+    <arg name="third_tb3_z_pos" default=" 0.10"/>
+    <arg name="third_tb3_yaw"   default=" 0.0"/>
+    -->
+
+    <!-- 3 in the same room: -->
+    <arg name="third_tb3_x_pos" default=" 0.0"/>
+    <arg name="third_tb3_y_pos" default="0.0"/>
+    <arg name="third_tb3_z_pos" default=" 0.90"/>
+    <arg name="third_tb3_yaw"   default=" 0"/>
+    
+
+    <!-- 3 in the same room:-->
+    <arg name="second_tb3_x_pos" default=" 0.20"/>
+    <arg name="second_tb3_y_pos" default="0.30"/>
+    <arg name="second_tb3_z_pos" default=" 0.1"/>
+    <arg name="second_tb3_yaw"   default=" -230.71"/>
+    
+    <!-- 3 in the same room: -->
+    <arg name="first_tb3_x_pos" default="0.10"/>
+    <arg name="first_tb3_y_pos" default="0.10"/>
+    <arg name="first_tb3_z_pos" default="0.45"/>
+    <arg name="first_tb3_yaw"   default="88.71"/>
+    
+
+         TODO set these actual transform values based on real robot!!!
+    <!-- <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_map" args="0 0 0 0 0 0 base_footprint map 10" />-->
+
+    <node pkg="tf" type="static_transform_publisher" name="world_frames_connection" args="0 0 0 0 0 0 map $(arg second_tb3)/odom 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="world_frames_connection2" args="0 0 0 0 0 0 map $(arg first_tb3)/pose1 100"/> 
+    
+    
+    <node pkg="tf" type="static_transform_publisher" name="world_frames_connection3" args="0 0 0 0 0 0 map $(arg third_tb3)/object_base_link 100"/>
+    
+
+
+
+
+
+<!-- 3 in the same room: -->
+
+      <group ns="$(arg third_tb3)">
+    
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find rviz_textured_quads)/urdf/ar_tag1.urdf"/>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg third_tb3)" />
+    </node>
+    
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg third_tb3) -x $(arg third_tb3_x_pos) -y $(arg third_tb3_y_pos) -z $(arg third_tb3_z_pos) -Y $(arg third_tb3_yaw) -param robot_description" />
+  </group>
+
+
+
+<!-- -->
+  <group ns="$(arg second_tb3)">
+    
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find rviz_textured_quads)/urdf/differential_drive_robot2.xacro"/>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg second_tb3)" />
+    </node> 
+    
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg second_tb3) -x $(arg second_tb3_x_pos) -y $(arg second_tb3_y_pos) -z $(arg second_tb3_z_pos) -Y $(arg second_tb3_yaw) -param robot_description" />
+  </group>
+
+
+<!-- -->
+  <group ns="$(arg first_tb3)">
+      
+    
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find rviz_textured_quads)/urdf/differential_drive_robot.xacro"/>
+     
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg first_tb3)" /> 
+    
+    </node> 
+   
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg first_tb3) -x $(arg first_tb3_x_pos) -y $(arg first_tb3_y_pos) -z $(arg first_tb3_z_pos) -Y $(arg first_tb3_yaw) -param robot_description -model Virtual_$(arg first_tb3)" />
+  </group>
+
+
+    <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
+    <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree" output="screen" />
+
+
+
+
+
+
+</launch>
