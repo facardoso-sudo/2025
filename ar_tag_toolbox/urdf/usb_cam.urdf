@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- Kinematic model, simplified visual, no collisions -->
+<robot name="usb_cam" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<link name="usb_cam"/>
+	<link name="optical_frame"/>
+	<joint name="optical_frame" type="fixed">
+		<parent link="usb_cam"/>
+		<child link="optical_frame"/>
+	</joint>
+</robot>
